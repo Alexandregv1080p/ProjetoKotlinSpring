@@ -1,5 +1,6 @@
 package me.firstkotlin.credit.request.system.controller
 
+import jakarta.validation.Valid
 import me.firstkotlin.credit.request.system.dto.CustomerDto
 import me.firstkotlin.credit.request.system.dto.CustomerUpdateDto
 import me.firstkotlin.credit.request.system.dto.CustomerView
@@ -15,7 +16,7 @@ class CustomerResource(
     private val customerService: CustomerService
 ) {
     @PostMapping
-    fun saveCustomer(@RequestBody customerDto: CustomerDto):ResponseEntity<String>{
+    fun saveCustomer(@Valid @RequestBody customerDto: CustomerDto):ResponseEntity<String>{
         val savedCustomer = this.customerService.save(customerDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED).body("Customer ${savedCustomer.email} saved")
     }
@@ -31,6 +32,7 @@ class CustomerResource(
     @PatchMapping
     fun updateCostumer(
         @RequestParam(value="customerId") id: Long,
+        @Valid
         @RequestBody customerUpdateDtoa: CustomerUpdateDto
     ): ResponseEntity<CustomerView>{
         val customer: Customer = this.customerService.findById(id)

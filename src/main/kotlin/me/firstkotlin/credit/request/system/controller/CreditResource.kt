@@ -1,5 +1,6 @@
 package me.firstkotlin.credit.request.system.controller
 
+import jakarta.validation.Valid
 import me.firstkotlin.credit.request.system.dto.CreditDto
 import me.firstkotlin.credit.request.system.dto.CreditView
 import me.firstkotlin.credit.request.system.dto.CreditViewList
@@ -17,7 +18,7 @@ class CreditResource(
     private val creditService: CreditService
 ) {
     @PostMapping
-    fun saveCredit(@RequestBody creditDto: CreditDto): ResponseEntity<String> {
+    fun saveCredit(@RequestBody @Valid creditDto: CreditDto): ResponseEntity<String> {
         val save: Credit = this.creditService.save(creditDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED)
             .body("Credit ${save.creditCode} - Customr ${save.customer?.firstName}")
